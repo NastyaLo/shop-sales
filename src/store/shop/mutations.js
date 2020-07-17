@@ -1,4 +1,7 @@
 export const mutations = {
+  'ADD_SALE_TYPE'(state, sale) {
+      state.sales.push(sale);
+  },
   'ADD_TO_BASKET'(state, id) {
     const item = state.basket.find(i => i.id === id);
 
@@ -6,6 +9,7 @@ export const mutations = {
       state.basket.push({
         id: id,
         count: 1,
+        sales: [],
       });
     } else {
       item.count += 1;
@@ -24,4 +28,21 @@ export const mutations = {
 
     if (item.count === 0) state.basket.splice(itemIndex, 1)
   },
+  'RESET_SALES'(state, itemId) {
+    const item = state.basket.find(item => item.id === itemId);
+
+    if (item) {
+      item.sales = [];
+    }
+  },
+  'APPLY_SALE'(state, { itemId, saleId, saleProfit }) {
+    const item = state.basket.find(item => item.id === itemId);
+
+    if (item) {
+      item.sales.push({
+        saleId,
+        saleProfit,
+      });
+    }
+  }
 };

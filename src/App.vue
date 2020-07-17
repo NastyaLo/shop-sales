@@ -22,6 +22,9 @@ export default {
   data () {
     return {}
   },
+  beforeCreate() {
+    this.$store.dispatch('fetchSales')
+  },
   methods: {
     ...mapGetters(['shopItems'])
   },

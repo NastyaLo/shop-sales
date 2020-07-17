@@ -5,18 +5,30 @@ import bundleDiscount from "./bundleDiscount";
 import bulkOrderDiscount from "./bulkOrderDiscount";
 import freeShipping from "./freeShipping";
 
-// maybe to state to change values...
+// {
+//   id: number
+//   title: string
+//   compatibility: boolean (if true - can be applied with other sale at the same moment)
+//   percent: number,
+//   code: string,
+//   dateStart: Date | null,
+//   dateEnd: Date | null,
+//   apply: 'code' | 'auto',
+//   isAvailable: function: boolean,
+//   discount: function: number,
+// }
+
 export const sales = [
   {
     id: 1,
     title: '10% discount',
-    type: 'single',
     compatibility: true,
     percent: '0.1',
     code: 'promo',
     dateStart: null,
     dateEnd: null,
-    isAvailable: isSaleAvailable,
+    apply: 'code',
+    isAvailable: (code) => isSaleAvailable(code, this),
     discount: (item) => percentDiscount(item, this.percent),
   },
   {
@@ -26,7 +38,7 @@ export const sales = [
     dateStart: null,
     dateEnd: null,
     groupCount: 4,
-    isAvailable: isSaleAvailable,
+    isAvailable: (code) => isSaleAvailable(code, this),
     discount: (item) => oneFreeDiscount(item, this.groupCount),
   },
   {
@@ -37,7 +49,7 @@ export const sales = [
     dateEnd: null,
     pair: [1, 2],
     percent: 0.2,
-    isAvailable: isSaleAvailable,
+    isAvailable: (code) => isSaleAvailable(code, this),
     // here we need only to count price, mb return ids
     discount: (items) => bundleDiscount(items, this.pair, this.percent),
   },
@@ -53,7 +65,7 @@ export const sales = [
       300: 0.20,
     },
     maxRate: 300,
-    isAvailable: isSaleAvailable,
+    isAvailable: (code) => isSaleAvailable(code, this),
     discount: (item) => bulkOrderDiscount(item, this.rates, this.maxRate),
   },
   {
@@ -63,7 +75,7 @@ export const sales = [
     dateStart: null,
     dateEnd: null,
     rate: 100,
-    isAvailable: isSaleAvailable,
+    isAvailable: (code) => isSaleAvailable(code, this),
     discount: (items) => freeShipping(items, this.rate),
   }
 ];

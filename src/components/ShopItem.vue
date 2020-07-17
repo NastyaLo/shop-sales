@@ -25,14 +25,14 @@
     props: ['title', 'price', 'id'],
     computed: {
       inBasketAmount() {
-        const item = this.basketIds().find(i => i.id === this.id);
+        const item = this.basketItems().find(i => i.id === this.id);
         if (!item) return 0;
 
         return item.count;
       },
     },
     methods: {
-      ...mapGetters(['basketIds']),
+      ...mapGetters(['basketItems']),
       addToBasket() {
         this.$store.dispatch('addToBasket', { id: this.id });
       },
